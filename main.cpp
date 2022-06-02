@@ -13,7 +13,9 @@ g++ -o Space_Invaders main.cpp Entities.cpp -lX11 -lGL -lpthread -lpng -lstdc++f
 #include "olcPixelGameEngine.h"
 #include "Entities.hpp"
 
-
+std::string shipSpritePath = "./Sprites/Spaceship.png";
+std::string alienSpritePath = "";
+std::string laserSpritePath = "";
 
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
@@ -29,8 +31,8 @@ public:
 public:
 	bool OnUserCreate() override {
 		entity = new Entity(this);
-		ship   = new Ship  (this, {15.0f, 15.0f});
-		alien  = new Alien (this, {30.0f, 30.0f});
+		ship   = new Ship  (this, shipSpritePath,  {15.0f, 15.0f});
+		alien  = new Alien (this, alienSpritePath, {30.0f, 30.0f});
 
 		
 		return true;
@@ -39,23 +41,21 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override {
 		if (GetKey(olc::ESCAPE).bPressed) return false;
 
-        Clear(olc::BLANK);
-		
+        DrawGame();
+
+		return true;
+	}
+
+	void DrawGame() {
+		Clear(olc::BLANK);
+
 		entity->Draw();
 		ship->Draw();
 		alien->Draw();
-
-		// std::cout << "entity: " << entity->position.x << ", " << entity->position.y << std::endl
-		//           << "ship:   " << ship->position.x << ", " << ship->position.y << std::endl
-		// 		  << "alien:  " << alien->position.x << ", " << alien->position.y << std::endl << std::endl;
-
-		//  ship->SetPosition({ ship->GetX() + 10.0f * fElapsedTime,  ship->GetY()                       });
-		// alien->SetPosition({alien->GetX() + 10.0f * fElapsedTime, alien->GetY() + 10.0f * fElapsedTime});
-        
-		//void Clear();
-		return true;
 	}
 };
+
+
 
 int main() {
 	Space_Invaders game;

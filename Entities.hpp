@@ -8,10 +8,10 @@
 
 class Entity {
 public:
-    Entity();
-    Entity(olc::PixelGameEngine*, olc::vf2d pos = {0.0f, 0.0f}, int l = 0);
-    Entity(const Entity&);
-    ~Entity() {};
+    Entity(); //Default Constructor
+    Entity(olc::PixelGameEngine*, const std::string& = "", olc::vf2d = {0.0f, 0.0f}, int = 0); //Constructor
+    Entity(const Entity&); //Copy Constructor
+    ~Entity() {}; //Destructor
 
     void     swap       (Entity&);
     Entity&  operator=  (Entity*);
@@ -21,12 +21,15 @@ public:
     float       GetX       () const { return position.x; };
     float       GetY       () const { return position.y; };
     virtual void      Draw       () const;
+    virtual olc::vi2d GetSpriteSection(const int) const;
 
-//protected:
+protected:
     olc::PixelGameEngine* pge;
     olc::vf2d position;
     int lives;
-
+    
+    std::unique_ptr<olc::Sprite> sprite;
+    int frame;
 };
 
 
@@ -39,7 +42,10 @@ public:
     using Entity::swap;
     using Entity::operator=;
 
+    using Entity::GetSpriteSection;
+
     void Draw () const override;
+    olc::vi2d GetSpriteSection(const int) const override;
 
 };
 
