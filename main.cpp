@@ -19,6 +19,7 @@ class Space_Invaders : public olc::PixelGameEngine {
 protected:
 	Entity* entity;
 	Entity* ship;
+	Entity* alien;
 
 public:
 	Space_Invaders() {
@@ -28,7 +29,8 @@ public:
 public:
 	bool OnUserCreate() override {
 		entity = new Entity(this);
-		ship = new Entity(this);
+		ship   = new Ship  (this, {15.0f, 15.0f});
+		alien  = new Alien (this, {30.0f, 30.0f});
 
 		
 		return true;
@@ -41,10 +43,16 @@ public:
 		
 		entity->Draw();
 		ship->Draw();
+		alien->Draw();
 
-		ship->SetPosition({ship->GetX() + 1.0f * fElapsedTime, ship->GetY()});
+		// std::cout << "entity: " << entity->position.x << ", " << entity->position.y << std::endl
+		//           << "ship:   " << ship->position.x << ", " << ship->position.y << std::endl
+		// 		  << "alien:  " << alien->position.x << ", " << alien->position.y << std::endl << std::endl;
 
-        //void Clear();
+		//  ship->SetPosition({ ship->GetX() + 10.0f * fElapsedTime,  ship->GetY()                       });
+		// alien->SetPosition({alien->GetX() + 10.0f * fElapsedTime, alien->GetY() + 10.0f * fElapsedTime});
+        
+		//void Clear();
 		return true;
 	}
 };

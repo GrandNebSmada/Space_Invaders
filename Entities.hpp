@@ -13,16 +13,16 @@ public:
     Entity(const Entity&);
     ~Entity() {};
 
-    void      swap       (Entity&);
+    void     swap       (Entity&);
     Entity&  operator=  (Entity*);
 
-    void      SetPosition(const olc::vf2d&); 
+    void      SetPosition(const olc::vf2d); 
 	olc::vf2d GetPosition() const;
     float       GetX       () const { return position.x; };
     float       GetY       () const { return position.y; };
     virtual void      Draw       () const;
 
-protected:
+//protected:
     olc::PixelGameEngine* pge;
     olc::vf2d position;
     int lives;
@@ -34,29 +34,26 @@ protected:
 
 class Ship : public Entity {
 public:
-    void Draw () const;
+    using Entity::Entity;
+
+    using Entity::swap;
+    using Entity::operator=;
+
+    void Draw () const override;
 
 };
 
 ////////////////////////////////////////////////////////////////////////// 
-/*
-class Laser {
+
+class Alien : public Entity {
 public:
-    Laser() {};
-    Laser(olc::PixelGameEngine* pge_);
-    Laser(olc::PixelGameEngine* pge_, olc::vf2d pos = {0, 0}, int l = 0);
-    ~Laser() {};
+    using Entity::Entity;
 
-    void      SetPosition(const olc::vf2d&); 
-	olc::vf2d GetPosition() const;
-    void      Draw       (olc::PixelGameEngine* pge) const;
+    using Entity::swap;
+    using Entity::operator=;
 
-protected:
-    olc::PixelGameEngine* pge;
-    olc::vf2d position;
-    int lives;
+    void Draw () const override;
 
 };
 
-*/
 #endif

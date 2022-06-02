@@ -3,7 +3,7 @@
 
 
 //////////////////////////////////////////////////////////////////////////
-//Ship Class Declarations
+//Entity Class Declarations
 //////////////////////////////////////////////////////////////////////////
 
 Entity::Entity() { //Default Constructor
@@ -45,7 +45,7 @@ Entity& Entity::operator=(Entity* rhs) {
     return *this;
 }
 
-void Entity::SetPosition(const olc::vf2d& input) {
+void Entity::SetPosition(const olc::vf2d input) {
     position = input;
 }
 
@@ -62,15 +62,25 @@ void Entity::Draw() const {
 
 
 //////////////////////////////////////////////////////////////////////////
-//Alien Class Declarations
+//Ship Class Declarations
 //////////////////////////////////////////////////////////////////////////
 
 void Ship::Draw() const {
-    pge->DrawRect(position, olc::vi2d(olc::vf2d{position.x, position.y}), olc::GREEN);
-    pge->DrawLine(position, olc::vi2d(olc::vf2d{position.x + 10.0f, position.y + 10.0f}), olc::RED);
-    pge->DrawLine(olc::vi2d(olc::vf2d{position.x, position.y + 10.0f}), olc::vi2d(olc::vf2d{position.x + 10.0f, position.y}), olc::RED);
+    pge->DrawRect(position, olc::vi2d(olc::vf2d{10.0f, 10.0f}), olc::GREEN);
+    pge->DrawLine(position, olc::vi2d(olc::vf2d{position.x + 10.0f, position.y + 10.0f}), olc::GREEN);
+    pge->DrawLine(olc::vi2d(olc::vf2d{position.x, position.y + 10.0f}), olc::vi2d(olc::vf2d{position.x + 10.0f, position.y}), olc::GREEN);
 }
 
+//////////////////////////////////////////////////////////////////////////
+//Alien Class Declarations
+//////////////////////////////////////////////////////////////////////////
+
+void Alien::Draw() const {
+    pge->DrawCircle(olc::vi2d(olc::vf2d{position.x + 5.0f, position.y + 5.0f}), 5, olc::BLUE);
+    olc::vi2d newPos = olc::vi2d(olc::vf2d{position.x + 2, position.y + 2});
+    pge->DrawLine(newPos, olc::vi2d(olc::vf2d{position.x +8.0f, position.y + 8.0f}), olc::BLUE);
+    pge->DrawLine(olc::vi2d(olc::vf2d{position.x, position.y + 9.0f}), olc::vi2d(olc::vf2d{position.x + 9.0f, position.y}), olc::BLUE);
+}
 
 //////////////////////////////////////////////////////////////////////////
 //Laser Class Declarations
