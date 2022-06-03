@@ -60,6 +60,7 @@ public:
     using Entity::swap;
     using Entity::operator=;
 
+    
     void Draw (float) override;
 
 };
