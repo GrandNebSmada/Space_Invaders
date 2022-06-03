@@ -14,14 +14,13 @@ g++ -o Space_Invaders main.cpp Entities.cpp -lX11 -lGL -lpthread -lpng -lstdc++f
 #include "Entities.hpp"
 
 std::string shipSpritePath = "./Sprites/Spaceship.png";
-std::string alienSpritePath = "";
+std::string alienSpritePath = "./Sprites/Alien.png";
 std::string laserSpritePath = "";
 
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
-	Entity* entity;
 	Entity* ship;
-	Entity* alien;
+	Entity* alien[];
 
 public:
 	Space_Invaders() {
@@ -30,10 +29,15 @@ public:
 
 public:
 	bool OnUserCreate() override {
-		entity = new Entity(this);
-		ship   = new Ship  (this, shipSpritePath,  {15.0f, 15.0f}, 3);
-		alien  = new Alien (this, alienSpritePath, {30.0f, 30.0f}, 1);
+		ship   = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
+		alien  = new Alien[90];
 
+		for(int j = 0; j < 15; ++j){
+			for (int i = 0; i < 5; ++i){
+				alien[i*j](this, alienSpritePath, {30.0f, 30.0f}, 1);
+				alien[i*j]->SetPosition(i, j);
+			}
+		}
 		
 		return true;
 	}
@@ -51,9 +55,13 @@ public:
 	void DrawGame(float fET) {
 		Clear(olc::BLANK);
 
-		entity->Draw(fET);
 		ship->Draw(fET);
-		alien->Draw(fET);
+
+		for(int j = 0; j < 15; ++j){
+			for (int i = 0; i < 5; ++i){
+				alien[i*l]->Draw(fET);
+			}
+		}
 	}
 };
 

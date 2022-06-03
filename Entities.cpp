@@ -110,8 +110,7 @@ void Ship::Draw(float fElapsedTime) {
 
 void Alien::Draw(float fElapsedTime) {
     if (lives < 1) return;
-
-    pge->DrawCircle(olc::vi2d(olc::vf2d{position.x + 5.0f, position.y + 5.0f}), 5, olc::BLUE);
+    pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::RED);
 }
 
 //////////////////////////////////////////////////////////////////////////
