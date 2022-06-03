@@ -9,7 +9,7 @@
 class Entity {
 public:
     Entity(); //Default Constructor
-    Entity(olc::PixelGameEngine*, const std::string& = "", olc::vf2d = {0.0f, 0.0f}, int = 0); //Constructor
+    Entity(olc::PixelGameEngine* pge_, const std::string& spritePath_= "", olc::vf2d position_ = {0.0f, 0.0f}, int lives_ = 0); //Constructor
     Entity(const Entity&); //Copy Constructor
     ~Entity() {}; //Destructor
 
@@ -18,10 +18,11 @@ public:
 
     void      SetPosition(const olc::vf2d); 
 	olc::vf2d GetPosition() const;
-    float       GetX       () const { return position.x; };
-    float       GetY       () const { return position.y; };
-    virtual void      Draw       () const;
+    float     GetX       () const { return position.x; };
+    float     GetY       () const { return position.y; };
+
     virtual olc::vi2d GetSpriteSection(const int) const;
+    virtual void      Draw(float);
 
 protected:
     olc::PixelGameEngine* pge;
@@ -29,7 +30,8 @@ protected:
     int lives;
     
     std::unique_ptr<olc::Sprite> sprite;
-    int frame;
+    std::unique_ptr<olc::Decal> decal;
+    float frame;
 };
 
 
@@ -44,8 +46,8 @@ public:
 
     using Entity::GetSpriteSection;
 
-    void Draw () const override;
     olc::vi2d GetSpriteSection(const int) const override;
+    void      Draw (float) override;
 
 };
 
@@ -58,7 +60,7 @@ public:
     using Entity::swap;
     using Entity::operator=;
 
-    void Draw () const override;
+    void Draw (float) override;
 
 };
 

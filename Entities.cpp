@@ -12,12 +12,13 @@ Entity::Entity() { //Default Constructor
     lives = 1;
 }
 
-Entity::Entity(olc::PixelGameEngine* pge_, const std::string& sprite_, olc::vf2d pos, int l) { //Constructor
+Entity::Entity(olc::PixelGameEngine* pge_, const std::string& spritePath_, olc::vf2d position_, int lives_) { //Constructor
     pge = pge_;
-    position = pos;
-    lives = l;
+    position = position_;
+    lives = lives_;
 
-    sprite = std::make_unique<olc::Sprite>(sprite_);
+    sprite = std::make_unique<olc::Sprite>(spritePath_);
+    decal = std::make_unique<olc::Decal>(sprite.get());
 }
 
 Entity::Entity(const Entity& actual) { //Copy Constructor
@@ -55,8 +56,13 @@ olc::vf2d Entity::GetPosition() const {
     return position;
 }
 
+olc::vi2d Entity::GetSpriteSection(const int f) const {
+    return {0, 0};
+}
 
-void Entity::Draw() const {
+void Entity::Draw(float fElapsedTime) {
+    if (lives < 1) return;
+    
     pge->DrawRect(position, olc::vi2d(olc::vf2d{10.0f, 10.0f}), olc::RED);
     pge->DrawLine(position, olc::vi2d(olc::vf2d{position.x + 10.0f, position.y + 10.0f}), olc::RED);
     pge->DrawLine(olc::vi2d(olc::vf2d{position.x, position.y + 10.0f}), olc::vi2d(olc::vf2d{position.x + 10.0f, position.y}), olc::RED);
@@ -66,35 +72,46 @@ void Entity::Draw() const {
 //////////////////////////////////////////////////////////////////////////
 //Ship Class Declarations
 //////////////////////////////////////////////////////////////////////////
-olc::vi2d Entity::GetSpriteSection(const int f) const {}
+
 
 olc::vi2d Ship::GetSpriteSection(const int f) const {
-        switch (f) {
-            case 0:
-                return {5, 0};
-            case 1:
-                return {37, 0};
-            case 2:
-                return {5, 32};
-            case 3:
-                return {37, 32};
-        }
-    return {0, 0};
+    olc::vi2d output;
+
+    switch (f) {
+    case 0:
+        output = {5, 0};
+        break;
+    case 1:
+        output = {37, 0};
+        break;
+    case 2:
+        output = {5, 32};
+        break;
+    case 3:
+        output = {37, 32};
+        break;
+    }
+
+    return output;
 }
 
-void Ship::Draw() const {
-    pge->DrawPartialSprite({50, 50}, sprite.get(), GetSpriteSection(3), {25, 32});
+void Ship::Draw(float fElapsedTime) {
+    if (lives < 1) return;
+    
+    pge->DrawPartialDecal(position, decal.get(), GetSpriteSection(int(frame)), {25, 32});
+
+    frame += 30 * fElapsedTime;
+    if (frame > 3) frame = 0;
 }
 
 //////////////////////////////////////////////////////////////////////////
 //Alien Class Declarations
 //////////////////////////////////////////////////////////////////////////
 
-void Alien::Draw() const {
+void Alien::Draw(float fElapsedTime) {
+    if (lives < 1) return;
+
     pge->DrawCircle(olc::vi2d(olc::vf2d{position.x + 5.0f, position.y + 5.0f}), 5, olc::BLUE);
-    olc::vi2d newPos = olc::vi2d(olc::vf2d{position.x + 2, position.y + 2});
-    pge->DrawLine(newPos, olc::vi2d(olc::vf2d{position.x +8.0f, position.y + 8.0f}), olc::BLUE);
-    pge->DrawLine(olc::vi2d(olc::vf2d{position.x, position.y + 9.0f}), olc::vi2d(olc::vf2d{position.x + 9.0f, position.y}), olc::BLUE);
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -31,8 +31,8 @@ public:
 public:
 	bool OnUserCreate() override {
 		entity = new Entity(this);
-		ship   = new Ship  (this, shipSpritePath,  {15.0f, 15.0f});
-		alien  = new Alien (this, alienSpritePath, {30.0f, 30.0f});
+		ship   = new Ship  (this, shipSpritePath,  {15.0f, 15.0f}, 3);
+		alien  = new Alien (this, alienSpritePath, {30.0f, 30.0f}, 1);
 
 		
 		return true;
@@ -41,17 +41,19 @@ public:
 	bool OnUserUpdate(float fElapsedTime) override {
 		if (GetKey(olc::ESCAPE).bPressed) return false;
 
-        DrawGame();
+		ship->SetPosition({float(GetMouseX()), float(GetMouseY())});
+
+        DrawGame(fElapsedTime);
 
 		return true;
 	}
 
-	void DrawGame() {
+	void DrawGame(float fET) {
 		Clear(olc::BLANK);
 
-		entity->Draw();
-		ship->Draw();
-		alien->Draw();
+		entity->Draw(fET);
+		ship->Draw(fET);
+		alien->Draw(fET);
 	}
 };
 
@@ -59,7 +61,7 @@ public:
 
 int main() {
 	Space_Invaders game;
-	if (game.Construct(256, 256, 3, 3))
+	if (game.Construct(640, 360, 2, 2))
 		game.Start();
 	return 0;
 }
