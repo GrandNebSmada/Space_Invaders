@@ -12,15 +12,18 @@ g++ -o Space_Invaders main.cpp Entities.cpp -lX11 -lGL -lpthread -lpng -lstdc++f
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 #include "Entities.hpp"
+#include <vector>
 
 std::string shipSpritePath = "./Sprites/Spaceship.png";
 std::string alienSpritePath = "./Sprites/Alien.png";
 std::string laserSpritePath = "";
 
+const int numOfAliens = 90;
+
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
 	Entity* ship;
-	Entity* alien[];
+	std::vector<Entity*> aliens;
 
 public:
 	Space_Invaders() {
@@ -29,13 +32,12 @@ public:
 
 public:
 	bool OnUserCreate() override {
-		ship   = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
-		alien  = new Alien[90];
+		ship  = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
 
-		for(int j = 0; j < 15; ++j){
-			for (int i = 0; i < 5; ++i){
-				alien[i*j](this, alienSpritePath, {30.0f, 30.0f}, 1);
-				alien[i*j]->SetPosition(i, j);
+		for(int j = 0; j < 5; ++j){
+			for (int i = 0; i < 15; ++i){
+				aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*30)}, 1));
+				aliens[j*15+i]->SetNum((j*15+i)+1);
 			}
 		}
 		
@@ -47,21 +49,35 @@ public:
 
 		ship->SetPosition({float(GetMouseX()), float(GetMouseY())});
 
+		checkAliens();
+		moveAliens(fElapsedTime);
         DrawGame(fElapsedTime);
 
 		return true;
 	}
 
-	void DrawGame(float fET) {
+	void checkAliens() {
+		
+	}
+
+	void moveAliens(float fElapsedTime){
+		for (int i = 0; i < 75; ++i){
+			//if ()
+			aliens[i]->SetX(aliens[i]->GetX()+5*fElapsedTime);
+		}
+		return;
+	}
+
+	void DrawGame(float &fElapsedTime) {
 		Clear(olc::BLANK);
 
-		ship->Draw(fET);
+		ship->Draw(fElapsedTime);
 
-		for(int j = 0; j < 15; ++j){
-			for (int i = 0; i < 5; ++i){
-				alien[i*l]->Draw(fET);
-			}
+		for (int i = 0; i < 75; ++i){
+			//std::cout << "Drawing alien: " << i*j << " " << i << ","  << std::endl;
+			aliens[i]->Draw(fElapsedTime);
 		}
+		
 	}
 };
 

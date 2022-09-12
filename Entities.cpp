@@ -1,6 +1,8 @@
 #include "olcPixelGameEngine.h"
 #include "Entities.hpp"
 
+#include <string>
+
 
 //////////////////////////////////////////////////////////////////////////
 //Entity Class Declarations
@@ -48,8 +50,24 @@ Entity& Entity::operator=(Entity* rhs) { //copy assignment
     return *this;
 }
 
+void Entity::SetPGE(olc::PixelGameEngine* pge_){
+    pge = pge_;
+}
+
+void Entity::SetSprite(const std::string& spritePath_){
+    sprite = std::make_unique<olc::Sprite>(spritePath_);
+}
+
 void Entity::SetPosition(const olc::vf2d input) {
     position = input;
+}
+
+void Entity::SetX(const float x_){
+    position = {x_, position.y};
+}
+
+void Entity::SetY(const float y_){
+    position = {position.x, y_};
 }
 
 olc::vf2d Entity::GetPosition() const {
@@ -110,7 +128,15 @@ void Ship::Draw(float fElapsedTime) {
 
 void Alien::Draw(float fElapsedTime) {
     if (lives < 1) return;
-    pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::RED);
+    if(entityNumber < 16)
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::RED);
+    else if (entityNumber > 15 && entityNumber < 46)
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::GREEN);
+    else
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::BLUE);
+
+
+    pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber));
 }
 
 //////////////////////////////////////////////////////////////////////////
