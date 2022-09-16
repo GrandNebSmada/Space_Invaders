@@ -18,8 +18,6 @@ std::string shipSpritePath = "./Sprites/Spaceship.png";
 std::string alienSpritePath = "./Sprites/Alien.png";
 std::string laserSpritePath = "";
 
-const int numOfAliens = 90;
-
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
 	Entity* ship;
@@ -37,7 +35,7 @@ public:
 		for(int j = 0; j < 5; ++j){
 			for (int i = 0; i < 15; ++i){
 				aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*30)}, 1));
-				aliens[j*15+i]->SetNum((j*15+i)+1);
+				//aliens[j*15+i]->SetNum((j*15+i)+1);
 			}
 		}
 		
@@ -56,8 +54,10 @@ public:
 		return true;
 	}
 
-	void checkAliens() {
-		
+	int checkAliens() {
+		for (int i = 0; i < 75; ++i){
+			
+		}
 	}
 
 	void moveAliens(float fElapsedTime){
