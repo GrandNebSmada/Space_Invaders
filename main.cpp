@@ -23,6 +23,8 @@ protected:
 	Entity* ship;
 	std::vector<Entity*> aliens;
 
+	int aliveAliens;
+
 public:
 	Space_Invaders() {
 		sAppName = "Space Invaders";
@@ -34,8 +36,9 @@ public:
 
 		for(int j = 0; j < 5; ++j){
 			for (int i = 0; i < 15; ++i){
-				aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*30)}, 1));
+				aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
 				//aliens[j*15+i]->SetNum((j*15+i)+1);
+				//aliveAliens = checkAliens();
 			}
 		}
 		
@@ -47,7 +50,7 @@ public:
 
 		ship->SetPosition({float(GetMouseX()), float(GetMouseY())});
 
-		checkAliens();
+		aliveAliens = checkAliens();
 		moveAliens(fElapsedTime);
         DrawGame(fElapsedTime);
 
@@ -55,15 +58,17 @@ public:
 	}
 
 	int checkAliens() {
+		int count = 0;
 		for (int i = 0; i < 75; ++i){
-			
+			count += aliens[i]->IsAlive();
 		}
+		return count;
 	}
 
 	void moveAliens(float fElapsedTime){
 		for (int i = 0; i < 75; ++i){
 			//if ()
-			aliens[i]->SetX(aliens[i]->GetX()+5*fElapsedTime);
+			aliens[i]->SetX(aliens[i]->GetX()+5*fElapsedTime*(76-aliveAliens));
 		}
 		return;
 	}
@@ -78,6 +83,7 @@ public:
 			aliens[i]->Draw(fElapsedTime);
 		}
 		
+		DrawString({10, 5}, std::to_string(aliveAliens));
 	}
 };
 

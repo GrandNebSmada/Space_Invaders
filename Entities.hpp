@@ -28,6 +28,7 @@ public:
     float     GetX       () const { return position.x; };
     float     GetY       () const { return position.y; };
 
+    bool IsAlive() const;
     virtual olc::vi2d GetSpriteSection(const int) const;
     virtual void      Draw(float);
 
@@ -45,10 +46,6 @@ protected:
 
 
     int entityNumber = 0;
-    bool isRight = false;
-    bool isLeft = false;
-    bool isTop = false;
-    bool isBottom = false;
 };
 
 
@@ -83,6 +80,10 @@ public:
 
     void Draw (float) override;
 
+    bool isRight = false;
+    bool isLeft = false;
+    bool isTop = false;
+    bool isBottom = false;
 };
 
 #endif

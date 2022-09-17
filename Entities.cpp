@@ -74,6 +74,10 @@ olc::vf2d Entity::GetPosition() const {
     return position;
 }
 
+bool Entity::IsAlive() const {
+    return lives;
+}
+
 olc::vi2d Entity::GetSpriteSection(const int f) const {
     return {0, 0};
 }
@@ -136,7 +140,7 @@ void Alien::Draw(float fElapsedTime) {
         pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::BLUE);
 
 
-    pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber));
+    //pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber));
 }
 
 //////////////////////////////////////////////////////////////////////////
