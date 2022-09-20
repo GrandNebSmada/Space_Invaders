@@ -44,7 +44,6 @@ protected:
     std::unique_ptr<olc::Decal> decal;
     float frame;
 
-
     int entityNumber = 0;
 };
 

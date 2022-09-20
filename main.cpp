@@ -20,8 +20,8 @@ std::string laserSpritePath = "";
 
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
-	Entity* ship;
-	std::vector<Entity*> aliens;
+	std::unique_ptr<Entity> ship;
+	std::vector<std::vector<std::unique_ptr<Alien>>> aliens;
 
 	int aliveAliens;
 
@@ -32,15 +32,18 @@ public:
 
 public:
 	bool OnUserCreate() override {
-		ship  = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
+		//ship  = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
 
-		for(int j = 0; j < 5; ++j){
-			for (int i = 0; i < 15; ++i){
-				aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
+		for(int y_ = 0; y_ < 5; ++y_){
+			aliens.push_back(std::vector<Alien*>())
+			for (int x_ = 0; x_ < 15; ++x_){
+				aliens[x_].push_back(new Alien(this, alienSpritePath, {float((x_+1)*30), float((y_+1)*20)}));
+				//aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
 				//aliens[j*15+i]->SetNum((j*15+i)+1);
 				//aliveAliens = checkAliens();
 			}
 		}
+		
 		
 		return true;
 	}
@@ -50,38 +53,44 @@ public:
 
 		ship->SetPosition({float(GetMouseX()), float(GetMouseY())});
 
-		aliveAliens = checkAliens();
-		moveAliens(fElapsedTime);
+		//aliveAliens = checkAliens();
+		//moveAliens(fElapsedTime);
         DrawGame(fElapsedTime);
 
 		return true;
 	}
 
-	int checkAliens() {
-		int count = 0;
-		for (int i = 0; i < 75; ++i){
-			count += aliens[i]->IsAlive();
-		}
-		return count;
-	}
+	// int checkAliens() {
+	// 	int count = 0;
+	// 	for(int y_ = 0; y_ < 5; ++y_){
+	// 		for (int x_ = 0; x_ < 15; ++x_){
+	// 			count += aliens[x_][y_]->IsAlive();
+	// 		}
+	// 	}
 
-	void moveAliens(float fElapsedTime){
-		for (int i = 0; i < 75; ++i){
-			//if ()
-			aliens[i]->SetX(aliens[i]->GetX()+5*fElapsedTime*(76-aliveAliens));
-		}
-		return;
-	}
+	// 	return count;
+	// }
+
+	// void moveAliens(float fElapsedTime){
+	// 	for(int y_ = 0; y_ < 5; ++y_){
+	// 		for (int x_ = 0; x_ < 15; ++x_){
+	// 			aliens[x_][y_]->SetX(aliens[x_][y_]->GetX()+5*fElapsedTime*(76-aliveAliens));
+	// 		}
+	// 	}
+	// 	return;
+	// }
 
 	void DrawGame(float &fElapsedTime) {
 		Clear(olc::BLANK);
 
 		ship->Draw(fElapsedTime);
 
-		for (int i = 0; i < 75; ++i){
-			//std::cout << "Drawing alien: " << i*j << " " << i << ","  << std::endl;
-			aliens[i]->Draw(fElapsedTime);
-		}
+		// for(int y_ = 0; y_ < 5; ++y_){
+		// 	for (int x_ = 0; x_ < 15; ++x_){
+		// 	//std::cout << "Drawing alien: " << i*j << " " << i << ","  << std::endl;
+		// 		aliens[x_][y_]->Draw(fElapsedTime);
+		// 	}
+		// }
 		
 		DrawString({10, 5}, std::to_string(aliveAliens));
 	}

@@ -133,14 +133,23 @@ void Ship::Draw(float fElapsedTime) {
 void Alien::Draw(float fElapsedTime) {
     if (lives < 1) return;
     if(entityNumber < 16)
-        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::RED);
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::DARK_RED);
     else if (entityNumber > 15 && entityNumber < 46)
-        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::GREEN);
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::DARK_GREEN);
     else
-        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::BLUE);
+        pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::DARK_BLUE);
 
 
-    //pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber));
+    pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::WHITE);
+    if (isTop && isLeft)
+        pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::RED);
+    if (isTop && isRight)
+        pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::GREEN);
+    if (isBottom && isLeft)
+        pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::BLUE);
+    if (isBottom && isRight)
+        pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::YELLOW);
+
 }
 
 //////////////////////////////////////////////////////////////////////////
