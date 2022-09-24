@@ -13,6 +13,7 @@ g++ -o Space_Invaders main.cpp Entities.cpp -lX11 -lGL -lpthread -lpng -lstdc++f
 #include "olcPixelGameEngine.h"
 #include "Entities.hpp"
 #include <vector>
+#include <memory>
 
 std::string shipSpritePath = "./Sprites/Spaceship.png";
 std::string alienSpritePath = "./Sprites/Alien.png";
@@ -21,7 +22,7 @@ std::string laserSpritePath = "";
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
 	std::unique_ptr<Entity> ship;
-	std::vector<std::vector<std::unique_ptr<Alien>>> aliens;
+	std::vector<std::vector<std::shared_ptr<Alien>>> aliens;
 
 	int aliveAliens;
 
@@ -35,13 +36,16 @@ public:
 		//ship  = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
 
 		for(int y_ = 0; y_ < 5; ++y_){
-			aliens.push_back(std::vector<Alien*>())
+			std::vector<std::shared_ptr<Alien>> temp;
+
 			for (int x_ = 0; x_ < 15; ++x_){
-				aliens[x_].push_back(new Alien(this, alienSpritePath, {float((x_+1)*30), float((y_+1)*20)}));
+				olc::vf2d tempCoordinate = {float((x_+1)*30), float((y_+1)*20)};
+				temp.push_back(std::make_shared<Alien>(this, alienSpritePath, tempCoordinate));
 				//aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
 				//aliens[j*15+i]->SetNum((j*15+i)+1);
 				//aliveAliens = checkAliens();
 			}
+			aliens.push_back(temp);
 		}
 		
 		
