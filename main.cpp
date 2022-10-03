@@ -54,8 +54,8 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override {
 		if (GetKey(olc::ESCAPE).bPressed) return false;
-
-		ship->SetPosition({float(GetMouseX()), float(GetMouseY())});
+		olc::vf2d mousePos = {float(GetMouseX()), float(GetMouseY())};
+		ship->SetPosition(mousePos);
 
 		//aliveAliens = checkAliens();
 		//moveAliens(fElapsedTime);
@@ -96,7 +96,7 @@ public:
 		// 	}
 		// }
 		
-		DrawString({10, 5}, std::to_string(aliveAliens));
+		//DrawString({10, 5}, std::to_string(aliveAliens));
 	}
 };
 
