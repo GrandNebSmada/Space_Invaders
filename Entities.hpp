@@ -6,6 +6,8 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+//namespace SI {
+
 class Entity {
 public:
     Entity (); //Default Constructor
@@ -34,7 +36,7 @@ public:
 
 
     void SetNum(int a){entityNumber = a;};
-
+    int entityNumber = 0;
 protected:
     olc::PixelGameEngine* pge;
     olc::vf2d position;
@@ -44,7 +46,7 @@ protected:
     std::unique_ptr<olc::Decal> decal;
     float frame;
 
-    int entityNumber = 0;
+    
 };
 
 
@@ -84,5 +86,5 @@ public:
     bool isTop = false;
     bool isBottom = false;
 };
-
+//}
 #endif
