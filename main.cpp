@@ -43,14 +43,21 @@ public:
 				temp.push_back(std::make_shared<Alien>(this, alienSpritePath, tempInitCoordinate));
 				
 				//aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
-				temp[x_]->SetNum((x_*5+y_)+1);
+				//temp[x_]->SetNum((x_*5+y_)+1);
 				//aliveAliens = checkAliens();
 			}
 			aliens.push_back(temp);
 		}
+
+
+		std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+		std::cout << "\nx - aliens.size()    : " << aliens.size();
+		std::cout << "\ny - aliens[0].size() : " << aliens[0].size();
+		std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
+
 		
-		for (int y_ = 0; y_ < 5; ++y_){
-			for(int x_ = 0; x_ < 15; ++x_){
+		for (int y_ = 0; y_ < aliens.size()-1; ++y_){
+			for(int x_ = 0; x_ < aliens[y_].size()-1; ++x_){
 				std::cout << aliens[x_][y_]->entityNumber << " : " << aliens[x_][y_]->GetPosition() << std::endl;
 			}
 		}
@@ -64,16 +71,16 @@ public:
 		//ship->SetPosition(mousePos);
 
 		aliveAliens = checkAliens();
-		moveAliens(fElapsedTime);
-        DrawGame(fElapsedTime);
+		//moveAliens(fElapsedTime);
+        //DrawGame(fElapsedTime);
 
 		return true;
 	}
 
 	int checkAliens() {
 		int count = 0;
-		for(int y_ = 0; y_ < 5; ++y_){
-			for (int x_ = 0; x_ < 15; ++x_){
+		for(int x_ = 0; x_ < aliens.size()-1; ++x_){
+			for (int y_ = 0; y_ < aliens[x_].size()-1; ++y_){
 				count += aliens[x_][y_]->IsAlive();
 			}
 		}
