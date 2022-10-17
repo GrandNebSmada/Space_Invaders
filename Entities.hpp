@@ -14,7 +14,7 @@ public:
     Entity (olc::PixelGameEngine* pge_,            //reference to pge
             const std::string& spritePath_= "",    //path to sprite
             olc::vf2d position_ = {0.0f, 0.0f},    //initial position
-            int lives_ = 0); //Constructor         //initial lives
+            int lives_ = 1); //Constructor         //initial lives
     Entity (const Entity&); //Copy Constructor
     ~Entity() {}; //Destructor
 

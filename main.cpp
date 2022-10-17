@@ -35,16 +35,14 @@ public:
 	bool OnUserCreate() override {
 		//ship  = new Ship(this, shipSpritePath,  {15.0f, 15.0f}, 3);
 
-		for(int y_ = 0; y_ < 5; ++y_){
+		for(int x_ = 0; x_ < 15; ++x_){
 			std::vector<std::shared_ptr<Alien>> temp;
 
-			for (int x_ = 0; x_ < 15; ++x_){
-				olc::vf2d tempInitCoordinate = {float((x_+1)*30), float((y_+1)*20)};
-				temp.push_back(std::make_shared<Alien>(this, alienSpritePath, tempInitCoordinate));
+			for (int y_ = 0; y_ < 5; ++y_){
+				olc::vf2d InitPosition = {float((x_+1)*30), float((y_+1)*20)};
+				temp.push_back(std::make_shared<Alien>(this, alienSpritePath, InitPosition, 1));
 				
-				//aliens.push_back(new Alien(this, alienSpritePath, {float((i+1)*30), float((j+1)*20)}, 1));
-				//temp[x_]->SetNum((x_*5+y_)+1);
-				//aliveAliens = checkAliens();
+				temp[y_]->SetNum((y_*15+x_)+1);
 			}
 			aliens.push_back(temp);
 		}
@@ -56,8 +54,8 @@ public:
 		std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
 
 		
-		for (int y_ = 0; y_ < aliens.size()-1; ++y_){
-			for(int x_ = 0; x_ < aliens[y_].size()-1; ++x_){
+		for (int x_ = 0; x_ < aliens.size(); ++x_){
+			for(int y_ = 0; y_ < aliens[x_].size(); ++y_){
 				std::cout << aliens[x_][y_]->entityNumber << " : " << aliens[x_][y_]->GetPosition() << std::endl;
 			}
 		}
@@ -72,15 +70,15 @@ public:
 
 		aliveAliens = checkAliens();
 		//moveAliens(fElapsedTime);
-        //DrawGame(fElapsedTime);
+        DrawGame(fElapsedTime);
 
 		return true;
 	}
 
 	int checkAliens() {
 		int count = 0;
-		for(int x_ = 0; x_ < aliens.size()-1; ++x_){
-			for (int y_ = 0; y_ < aliens[x_].size()-1; ++y_){
+		for(int x_ = 0; x_ < aliens.size(); ++x_){
+			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
 				count += aliens[x_][y_]->IsAlive();
 			}
 		}
@@ -89,8 +87,8 @@ public:
 	}
 
 	void moveAliens(float fElapsedTime){
-		for(int y_ = 0; y_ < 5; ++y_){
-			for (int x_ = 0; x_ < 15; ++x_){
+		for(int x_ = 0; x_ < aliens.size(); ++x_){
+			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
 				aliens[x_][y_]->SetX(aliens[x_][y_]->GetX()+5*fElapsedTime*(76-aliveAliens));
 			}
 		}
@@ -102,8 +100,8 @@ public:
 
 		//ship->Draw(fElapsedTime);
 
-		for(int y_ = 0; y_ < 5; ++y_){
-			for (int x_ = 0; x_ < 15; ++x_){
+		for(int x_ = 0; x_ < aliens.size(); ++x_){
+			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
 			//std::cout << "Drawing alien: " << i*j << " " << i << ","  << std::endl;
 				aliens[x_][y_]->Draw(fElapsedTime);
 			}
