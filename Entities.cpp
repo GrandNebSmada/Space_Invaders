@@ -140,7 +140,8 @@ void Alien::Draw(float fElapsedTime) {
         pge->DrawPartialDecal(position, decal.get(), {0, 0}, {33, 24}, {0.5, 0.5}, olc::DARK_BLUE);
 
 
-    pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::WHITE);
+    //pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::WHITE);
+
     if (isTop && isLeft)
         pge->DrawString(position.x-5, position.y-5, std::to_string(entityNumber), olc::RED);
     if (isTop && isRight)

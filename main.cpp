@@ -19,6 +19,7 @@ std::string shipSpritePath = "./Sprites/Spaceship.png";
 std::string alienSpritePath = "./Sprites/Alien.png";
 std::string laserSpritePath = "";
 
+
 class Space_Invaders : public olc::PixelGameEngine {
 protected:
 	std::unique_ptr<Entity> ship;
@@ -47,17 +48,16 @@ public:
 			aliens.push_back(temp);
 		}
 
-
 		std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 		std::cout << "\nx - aliens.size()    : " << aliens.size();
 		std::cout << "\ny - aliens[0].size() : " << aliens[0].size();
 		std::cout << "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" << std::endl;
-
 		
-		for (int x_ = 0; x_ < aliens.size(); ++x_){
-			for(int y_ = 0; y_ < aliens[x_].size(); ++y_){
-				std::cout << aliens[x_][y_]->entityNumber << " : " << aliens[x_][y_]->GetPosition() << std::endl;
+		for(int y_ = 0; y_ < aliens[0].size(); ++y_){
+			for (int x_ = 0; x_ < aliens.size(); ++x_){
+				std::cout << aliens[x_][y_]->entityNumber << "{" << int(aliens[x_][y_]->GetX()) << "," << int(aliens[x_][y_]->GetY()) << "}, \t";
 			}
+			std::cout << std::endl;
 		}
 
 		return true;
@@ -65,11 +65,10 @@ public:
 
 	bool OnUserUpdate(float fElapsedTime) override {
 		if (GetKey(olc::ESCAPE).bPressed) return false;
-		//olc::vf2d mousePos = {float(GetMouseX()), float(GetMouseY())};
-		//ship->SetPosition(mousePos);
 
 		aliveAliens = checkAliens();
-		//moveAliens(fElapsedTime);
+		DrawString(10, 10, std::to_string(aliveAliens), olc::WHITE, 1);
+		moveAliens(fElapsedTime);
         DrawGame(fElapsedTime);
 
 		return true;
@@ -77,18 +76,42 @@ public:
 
 	int checkAliens() {
 		int count = 0;
-		for(int x_ = 0; x_ < aliens.size(); ++x_){
-			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
-				count += aliens[x_][y_]->IsAlive();
+
+		for(int y_ = 0; y_ < aliens[0].size(); ++y_){
+			for (int x_ = 0; x_ < aliens.size(); ++x_){
+				if(aliens[x_][y_]->IsAlive()) ++count;
+				else continue;
+
+			
+				if(y_ + 1 < aliens[0].size()) {
+					if(aliens[x_][y_]->GetY() < aliens[x_][y_+1]->GetY() && !aliens[x_][y_]->isTop) {
+						aliens[x_][y_]->isTop = true;
+					}else{
+						aliens[x_][y_]->isTop = false;
+					}
+				}
+
+				int yInv = aliens[x_].size() - y_;
+				
+				if(yInv - 1 >= 0 && yInv < aliens[x_].size()){
+					if(!(aliens[x_][yInv]->IsAlive())) continue;
+
+					if(aliens[x_][yInv]->GetY() > aliens[x_][yInv - 1]->GetY()) {
+						aliens[x_][yInv]->isBottom = true;
+					}else{
+						aliens[x_][yInv]->isBottom = false;
+					}
+				}
 			}
 		}
-
+		
+		
 		return count;
 	}
 
 	void moveAliens(float fElapsedTime){
-		for(int x_ = 0; x_ < aliens.size(); ++x_){
-			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
+		for(int y_ = 0; y_ < aliens[0].size(); ++y_){
+			for (int x_ = 0; x_ < aliens.size(); ++x_){
 				aliens[x_][y_]->SetX(aliens[x_][y_]->GetX()+5*fElapsedTime*(76-aliveAliens));
 			}
 		}
@@ -100,8 +123,8 @@ public:
 
 		//ship->Draw(fElapsedTime);
 
-		for(int x_ = 0; x_ < aliens.size(); ++x_){
-			for (int y_ = 0; y_ < aliens[x_].size(); ++y_){
+		for(int y_ = 0; y_ < aliens[0].size(); ++y_){
+			for (int x_ = 0; x_ < aliens.size(); ++x_){
 			//std::cout << "Drawing alien: " << i*j << " " << i << ","  << std::endl;
 				aliens[x_][y_]->Draw(fElapsedTime);
 			}
